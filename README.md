@@ -1,11 +1,11 @@
 
-#Running Database docker image (Mysql 8)
+### Running Database docker image (Mysql 8)
 
 Required docker-compose v2.13.0
 ```
 docker-compose -f src/main/docker/mysql-app.yml up -d
 ```
-#Database
+### Database
 MySql 8.0 with default configuration drive:
 
 ```
@@ -28,7 +28,7 @@ You can check this configuration in the **application.properties:**
 ```
 spring.jpa.hibernate.ddl-auto=update
 ```
-#Running application
+### Running application
 run:
 ```
 mvn clean compile
@@ -40,23 +40,23 @@ mvn spring-boot:run
 
 
 
-# Java Version
+### Java Version
 
 ```
 11
 ```
 
-#Test
+### Test
 Contains some simple unit tests and integration tests.
 
 To run the tests:
 ```
 mvn verify
 ```
-#Swagger.ui
+### Swagger.ui
 ```
 http://localhost:8085/swagger-ui.html
 ```
 
-#Authentication
+### Authentication
 No needed. All endpoints are bypassing any authentication.
