@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
@@ -83,6 +84,26 @@ public class UserRoleControllerIT  {
                     .andExpect(jsonPath("$.userId").value(createUserRoleDTO.getUserId()))
                     .andExpect(jsonPath("$.roleName").value(createUserRoleDTO.getRoleName()));
             UserRole userRole = userRoleRepository.findById("fd282131-d8aa-4819-b0c8-d9e0bfb1b75c").orElse(null);
+            userRoleRepository.delete(userRole);
+        }
+        
+        
+        @Test
+        public void testShouldNotCreateUserWhoAlreadyExists() throws Exception {
+
+            createUserRoleDTO.setUserId("fd282131-d8aa-4819-b0c8-d9e0bfb1b75c112");
+            createUserRole(createUserRoleDTO)
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.userId").value(createUserRoleDTO.getUserId()))
+                    .andExpect(jsonPath("$.roleName").value(createUserRoleDTO.getRoleName()));
+            UserRole userRole = userRoleRepository.findById("fd282131-d8aa-4819-b0c8-d9e0bfb1b75c112").orElse(null);
+           MvcResult result = createUserRole(createUserRoleDTO)
+                    .andExpect(status().isBadRequest())
+                    .andReturn();
+
+           assertThat(result.getResponse().getContentAsString()).isEqualTo("The user id " + createUserRoleDTO.getUserId() + "has already a role associated:");
+
+
             userRoleRepository.delete(userRole);
         }
 
